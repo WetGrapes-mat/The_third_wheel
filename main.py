@@ -1,6 +1,6 @@
-class Poliy_pisca:
+class PoliyPisca:
     pass
 
-def Matvey_vonyuchka():
-    pass
 
+def matvey_vonyuchka():
+    pass
