@@ -15,4 +15,6 @@ if __name__ == '__main__':
 if input() == 'some':
     print('BODY ONCE TOLD ME')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+class Poliy_pisca:
+    pass
