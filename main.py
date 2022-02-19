@@ -3,4 +3,4 @@ class Poliypisca:
 
 
 def matvey_vonyuchka():
-    print('llll')
+    print('')
