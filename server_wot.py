@@ -1,18 +1,18 @@
 class Player:
-    def __init__(self, nickname, won_battels, battels, credits, tank):
+    def __init__(self, nickname, won_battles, battles, credits, tank):
         self.__nickname = nickname
-        self.__won_battles = won_battels
-        self.__battles = battels
+        self.__won_battles = won_battles
+        self.__battles = battles
         self.__credits = credits
         self.__tanks = tank
 
     def get_nickmane(self):
         return self.__nickname
 
-    def get_won_battel(self):
+    def get_won_battle(self):
         return self.__won_battles
 
-    def get_battel(self):
+    def get_battle(self):
         return self.__battles
 
     def get_credits(self):
