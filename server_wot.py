@@ -106,7 +106,8 @@ class Server:
                 ))
                 temp_tank.clear()
 
-    def set_players_in_file(self, list_all_players):
+    @staticmethod
+    def set_players_in_file(list_all_players):
         with open('player_list.json', 'r') as file:
             counter = 0
             player_list = json.load(file)
