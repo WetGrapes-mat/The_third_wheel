@@ -25,8 +25,8 @@ def parser():
                     temp_tank.append(id_tank)
             all_player.append(Player(
                 nickname=player['nickname'],
-                won_battels=player['won_battels'],
-                battels=player['battels'],
+                won_battles=player['won_battles'],
+                battles=player['battles'],
                 credits=player['credits'],
                 tank=temp_tank
             ))
@@ -40,8 +40,8 @@ def save_info(list_all_players):
         player_list = json.load(file)
         temp = []
         for i_item in player_list['player']:
-            i_item['won_battels'] = list_all_players[counter].get_won_battel()
-            i_item['battels'] = list_all_players[counter].get_battel()
+            i_item['won_battles'] = list_all_players[counter].get_won_battle()
+            i_item['battles'] = list_all_players[counter].get_battle()
             i_item['credits'] = list_all_players[counter].get_credits()
             for i in list_all_players[counter].get_tanks():
                 temp.append(i.get_id())
@@ -50,4 +50,3 @@ def save_info(list_all_players):
             counter += 1
         with open('player_list.json', 'w') as w:
             json.dump(player_list, w, indent=2)
-

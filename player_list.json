@@ -2,8 +2,8 @@
   "player": [
     {
       "nickname": "Bob",
-      "won_battels": 100,
-      "battels": 210,
+      "won_battles": 100,
+      "battles": 210,
       "credits": 100000,
       "tanks": [
         2
@@ -11,8 +11,8 @@
     },
     {
       "nickname": "Tom",
-      "won_battels": 200,
-      "battels": 300,
+      "won_battles": 200,
+      "battles": 300,
       "credits": 200000,
       "tanks": [
         1,
