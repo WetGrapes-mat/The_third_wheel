@@ -31,23 +31,28 @@ def parser():
                 tank=temp_tank
             ))
             temp_tank = []
-        return all_player, all_tanks,
+        return all_player, all_tanks
 
 
-def save_info(list_all_players):
+def encoder(all_player_list):
+    class MyEncoder(json.JSONEncoder):
+        def default(self, o):
+            if isinstance(o, Player):
+                temp = []
+                for i in o.get_tanks():
+                    temp.append(i.get_id())
+                return {
+                    "nickname": o.get_nickmane(),
+                    "won_battels": o.get_won_battel(),
+                    "battels": o.get_battel(),
+                    "credit": o.get_credits(),
+                    "tanks": temp
+                }
+            return o
+
     with open('player_list.json', 'r') as file:
-        counter = 0
         player_list = json.load(file)
-        temp = []
         for i_item in player_list['player']:
-            i_item['won_battels'] = list_all_players[counter].get_won_battel()
-            i_item['battels'] = list_all_players[counter].get_battel()
-            i_item['credits'] = list_all_players[counter].get_credits()
-            for i in list_all_players[counter].get_tanks():
-                temp.append(i.get_id())
-            i_item['tanks'] = temp
-            temp = []
-            counter += 1
+            json.dumps(i_item, cls=MyEncoder)
         with open('player_list.json', 'w') as w:
             json.dump(player_list, w, indent=2)
-
