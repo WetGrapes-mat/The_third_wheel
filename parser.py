@@ -18,7 +18,6 @@ def parser():
     temp_tank = []
 
     with open('player_list.json', 'r') as file_player:
-        # json.dump(data, file, indent=3)
         player_list = json.load(file_player)
         for player in player_list['player']:
             for id_tank in all_tanks:
