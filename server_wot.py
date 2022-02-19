@@ -1,30 +1,26 @@
 class Player:
-    __nickname = ''
-    __tanks = []
-    __win_rate = 0    # float
-    __battles = 0
-    __won_battles = 0
-    __credits = 0
-    __exp = 0
-    # __tanks_exp = 0
-    __investigated_tanks = []
+    def __init__(self, nickname, won_battels, battels, credits, tank):
+        self.__nickname = nickname
+        self.__won_battles = won_battels
+        self.__battles = battels
+        self.__credits = credits
+        self.__tanks = tank
 
     def get_credits(self):
         return self.__credits
 
-    def get_exp_for_tank_invest(self):
-        return self.__exp
+    def get_tanks(self):
+        return self.__tanks
 
 
 class Tank:
-    __name = ''
-    __id = 0
-    __price = 0
-    __investigation_price = 0
-    __level = 0
-    __heal_points = 0
-    __force = 0    # int?
-    __tanks_exp = []
+    def __init__(self, name, id, price, hp, force):
+        self.__name = name
+        self.__id = id
+        self.__price = price
+        self.__heal_points = hp
+        self.__force = force
+
 
     def get_heal_points(self):
         return self.__heal_points
@@ -35,20 +31,11 @@ class Tank:
     def get_id(self):
         return self.__id
 
-    def get_lvl(self):
-        return self.__level
-
     def get_force(self):
         return self.__force
 
     def get_price(self):
         return self.__price
-
-    def get_investigation_price(self):
-        return self.__investigation_price
-
-    def get_investigation_list(self):
-        return self.__tanks_exp
 
 
 class Bot:
