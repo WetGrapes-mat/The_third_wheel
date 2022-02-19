@@ -1,3 +1,7 @@
+import random
+import json
+
+
 class Player:
     def __init__(self, nickname, won_battles, battles, credits, tank):
         self.__nickname = nickname
@@ -60,10 +64,65 @@ class Bot:
     def get_tank(self):
         return self.__tank
 
+    def generate_nickname(self):
+        with open('nickname.txt', 'r') as file_nickname:
+            self.__nickname = random.choice(file_nickname.readlines())
+
+    def generate_tank(self, server):
+        self.__tank = random.choice(server.get_tank_list())
+        return self.__tank
+
 
 class Server:
     __player_list = []
     __tank_list = []
+
+    def get_tanks_from_file(self):
+        with open('tank_list.json', 'r') as file_tank:
+            tank_list = json.load(file_tank)
+            for tank in tank_list['tanks']:
+                self.__tank_list.append(Tank(
+                    name=tank['tank_name'],
+                    id=tank['tank_id'],
+                    price=tank['tank_price'],
+                    hp=tank['tank_hp'],
+                    force=tank['tank_force']
+                ))
+
+    def get_players_from_file(self):
+        with open('player_list.json', 'r') as file_player:
+            temp_tank = []
+            player_list = json.load(file_player)
+            for player in player_list['player']:
+                for id_tank in self.__tank_list:
+                    if id_tank.get_id() in player['tanks']:
+                        temp_tank.append(id_tank)
+                self.__player_list.append(Player(
+                    nickname=player['nickname'],
+                    won_battles=player['won_battles'],
+                    battles=player['battles'],
+                    credits=player['credits'],
+                    tank=temp_tank.copy()
+                ))
+                temp_tank.clear()
+
+    def set_players_in_file(self, list_all_players):
+        with open('player_list.json', 'r') as file:
+            counter = 0
+            player_list = json.load(file)
+            temp = []
+            for i_item in player_list['player']:
+                i_item['nickname'] = list_all_players[counter].get_nickname()
+                i_item['won_battles'] = list_all_players[counter].get_won_battle()
+                i_item['battles'] = list_all_players[counter].get_battle()
+                i_item['credits'] = list_all_players[counter].get_credits()
+                for i in list_all_players[counter].get_tanks():
+                    temp.append(i.get_id())
+                i_item['tanks'] = temp
+                temp = []
+                counter += 1
+            with open('player_list.json', 'w') as w:
+                json.dump(player_list, w, indent=2)
 
     def get_player_list(self):
         return self.__player_list
