@@ -15,9 +15,9 @@ def parser():
                 hp=tank['tank_hp'],
                 force=tank['tank_force']
             ))
-    temp_tank = []
 
     with open('player_list.json', 'r') as file_player:
+        temp_tank = []
         player_list = json.load(file_player)
         for player in player_list['player']:
             for id_tank in all_tanks:
@@ -28,9 +28,9 @@ def parser():
                 won_battels=player['won_battels'],
                 battels=player['battels'],
                 credits=player['credits'],
-                tank=temp_tank
+                tank=temp_tank.copy()
             ))
-            temp_tank = []
+            temp_tank.clear()
         return all_player, all_tanks
 
 
