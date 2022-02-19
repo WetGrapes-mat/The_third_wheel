@@ -6,7 +6,7 @@ class Player:
         self.__credits = credits
         self.__tanks = tank
 
-    def get_nickmane(self):
+    def get_nickname(self):
         return self.__nickname
 
     def get_won_battle(self):
