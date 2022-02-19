@@ -295,8 +295,9 @@ class BattlePlayer:
         self.__damage = 0
         self.__frags = 0
 
-    def repair_tank(self, got_damage):      # !!!
-        pass
+    def repair_tank(self):
+        payment = (self.get_heal_points() - self.__heal_points) * 33
+        return payment
 
     def take_self_damage(self, damage):
         self.__heal_points -= damage
