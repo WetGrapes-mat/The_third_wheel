@@ -15,6 +15,9 @@ class Player:
     def get_nickname(self):
         return self.__nickname
 
+    def get_winrate(self):
+        return self.__win_rate
+
     def get_won_battles(self):
         return self.__won_battles
 
@@ -229,15 +232,95 @@ class Server:
         return self.__tank_list
 
     def start_battle(self, tank, player):
-        earned_credits, battle_won = 0, 0    # temporary value, need to be changed later
+        team_one = []
+        team_two = []
+        active_player = BattlePlayer(player, tank)
+        team_one.append(active_player)
+        for i in range(4):
+            team_one.append(BattlePlayer(Bot(self)))
+        for i in range(5):
+            team_two.append(BattlePlayer(Bot(self)))
+
+        battle = Battle(team_one, team_two, self.choose_map())
+        team_one, team_two = battle.simulate_battle(team_one, team_two)
+        hp = 0
+        for p in team_one:
+            hp += p.get_heal_points()
+        if hp > 0:
+            battle_won = 1
+        else:
+            battle_won = 0
+        earned_credits = self.count_prizes(team_one[0])
         return earned_credits, battle_won
+
+    def choose_map(self):
+        maps = ['Prohorovka', 'Malinovka', 'Himelsdorf', 'Ruinberg', 'Minsk', 'Berlin']
+        mapname = random.choice(maps)
+        return mapname
+
+    def count_prizes(self, battle_player):
+        earned_credits = 20_000 * battle_player.get_frags() +\
+                         100 * battle_player.get_damage() - battle_player.repair_tank()
+        return earned_credits
 
 
 class Battle:
-    __team_one = []
-    __team_two = []
-    __team_one_frags = []
-    __team_two_frags = []
-    __team_one_damage = []
-    __team_two_damage = []
-    __map_name = ''
+    def __init__(self, teamone, teamtwo, mapname):
+        self.__team_one = teamone
+        self.__team_two = teamtwo
+        self.__map_name = mapname
+        self.__team_one_frags = [0] * 5
+        self.__team_two_frags = [0] * 5
+        self.__team_one_damage = [0] * 5
+        self.__team_two_damage = [0] * 5
+
+    def simulate_battle(self, team_one, team_two):          # !!!
+        return team_one, team_two
+
+
+class BattlePlayer:
+    def __init__(self, bot):
+        self.__tank = bot.get_tank()
+        self.__heal_points = self.__tank.get_heal_points()
+        self.__win_rate = bot.get_win_rate()
+        self.__nickname = bot.get_nickname()
+        self.__damage = 0
+        self.__frags = 0
+
+    def __init__(self, player, tank):           # !!!
+        self.__tank = tank
+        self.__heal_points = tank.get_heal_points()
+        self.__win_rate = player.get_winrate()
+        self.__nickname = player.get_nickname()
+        self.__damage = 0
+        self.__frags = 0
+
+    def repair_tank(self, got_damage):      # !!!
+        pass
+
+    def take_self_damage(self, damage):
+        self.__heal_points -= damage
+
+    def take_frags(self, more_frags):
+        self.__frags += more_frags
+
+    def take_damage(self, more_damage):
+        self.__damage += more_damage
+
+    def get_winrate(self):
+        return self.__win_rate
+
+    def get_heal_points(self):
+        return self.__heal_points
+
+    def get_tank(self):
+        return self.__tank
+
+    def get_nickname(self):
+        return self.__nickname
+
+    def get_damage(self):
+        return self.__damage
+
+    def get_frags(self):
+        return self.__frags
