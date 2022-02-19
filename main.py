@@ -1,4 +1,4 @@
-class PoliyPisca:
+class Poliypisca:
     pass
 
 
