@@ -6,6 +6,15 @@ class Player:
         self.__credits = credits
         self.__tanks = tank
 
+    def get_nickmane(self):
+        return self.__nickname
+
+    def get_won_battel(self):
+        return self.__won_battles
+
+    def get_battel(self):
+        return self.__battles
+
     def get_credits(self):
         return self.__credits
 
@@ -21,21 +30,20 @@ class Tank:
         self.__heal_points = hp
         self.__force = force
 
-
-    def get_heal_points(self):
-        return self.__heal_points
-
     def get_name(self):
         return self.__name
 
     def get_id(self):
         return self.__id
 
-    def get_force(self):
-        return self.__force
-
     def get_price(self):
         return self.__price
+
+    def get_heal_points(self):
+        return self.__heal_points
+
+    def get_force(self):
+        return self.__force
 
 
 class Bot:
