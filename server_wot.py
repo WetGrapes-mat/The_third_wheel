@@ -51,7 +51,7 @@ class Bot:
     __tank = None
     __win_rate = 0    # float
 
-    def get_winrate(self):
+    def get_win_rate(self):
         return self.__win_rate
 
     def get_nickname(self):
