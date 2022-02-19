@@ -274,26 +274,31 @@ class Battle:
         self.__team_one_damage = [0] * 5
         self.__team_two_damage = [0] * 5
 
-    def simulate_battle(self, team_one, team_two):          # !!!
+    def simulate_battle(self, team_one, team_two):
+
+
+
         return team_one, team_two
 
 
 class BattlePlayer:
-    def __init__(self, bot):
-        self.__tank = bot.get_tank()
-        self.__heal_points = self.__tank.get_heal_points()
-        self.__win_rate = bot.get_win_rate()
-        self.__nickname = bot.get_nickname()
-        self.__damage = 0
-        self.__frags = 0
+    # arg (Bot) or (Tank, Player)
+    def __init__(self, *args):
+        if len(args) == 1:
+            self.__tank = args[0].get_tank()
+            self.__heal_points = self.__tank.get_heal_points()
+            self.__win_rate = args[0].get_win_rate()
+            self.__nickname = args[0].get_nickname()
+            self.__damage = 0
+            self.__frags = 0
+        elif len(args) == 2:
+            self.__tank = args[0]
+            self.__heal_points = args[0].get_heal_points()
+            self.__win_rate = args[1].get_winrate()
+            self.__nickname = args[1].get_nickname()
+            self.__damage = 0
+            self.__frags = 0
 
-    def __init__(self, player, tank):           # !!!
-        self.__tank = tank
-        self.__heal_points = tank.get_heal_points()
-        self.__win_rate = player.get_winrate()
-        self.__nickname = player.get_nickname()
-        self.__damage = 0
-        self.__frags = 0
 
     def repair_tank(self):
         payment = (self.get_heal_points() - self.__heal_points) * 33
