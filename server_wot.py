@@ -121,6 +121,11 @@ class Bot:
     __tank = None
     __win_rate = 0    # float
 
+    def __init__(self, server):
+        self.generate_nickname()
+        self.generate_tank(server)
+        self.generate_win_rate()
+
     def get_win_rate(self):
         return self.__win_rate
 
@@ -129,6 +134,29 @@ class Bot:
 
     def get_tank(self):
         return self.__tank
+
+    def generate_win_rate(self):
+        choice = random.randint(0, 100)
+        if 0 <= choice < 10:
+            i = random.randint(0, 1)
+            if i == 0:
+                self.__win_rate = random.randint(30, 40)
+            elif i == 1:
+                self.__win_rate = random.randint(60, 70)
+        elif 10 <= choice < 30:
+            i = random.randint(0, 1)
+            if i == 0:
+                self.__win_rate = random.randint(40, 43)
+            elif i == 1:
+                self.__win_rate = random.randint(57, 60)
+        elif 30 <= choice < 55:
+            i = random.randint(0, 1)
+            if i == 0:
+                self.__win_rate = random.randint(43, 47)
+            elif i == 1:
+                self.__win_rate = random.randint(53, 57)
+        elif 55 <= choice <= 100:
+            self.__win_rate = random.randint(47, 53)
 
     def generate_nickname(self):
         with open('nickname.txt', 'r') as file_nickname:
@@ -141,6 +169,10 @@ class Bot:
 class Server:
     __player_list = []
     __tank_list = []
+
+    def __init__(self):
+        self.get_players_from_file()
+        self.get_tanks_from_file()
 
     def get_tanks_from_file(self):
         with open('tank_list.json', 'r') as file_tank:
