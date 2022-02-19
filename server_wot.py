@@ -70,7 +70,6 @@ class Bot:
 
     def generate_tank(self, server):
         self.__tank = random.choice(server.get_tank_list())
-        return self.__tank
 
 
 class Server:
