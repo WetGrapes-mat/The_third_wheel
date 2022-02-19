@@ -26,7 +26,7 @@ def parser():
             all_player.append(Player(
                 nickname=player['nickname'],
                 won_battels=player['won_battels'],
-                battels=player['battels'],
+                battles=player['battles'],
                 credits=player['credits'],
                 tank=temp_tank.copy()
             ))
@@ -42,9 +42,9 @@ def encoder(all_player_list):
                 for i in o.get_tanks():
                     temp.append(i.get_id())
                 return {
-                    "nickname": o.get_nickmane(),
-                    "won_battels": o.get_won_battel(),
-                    "battels": o.get_battel(),
+                    "nickname": o.get_nickname(),
+                    "won_battles": o.get_won_battles(),
+                    "battles": o.get_battle(),
                     "credit": o.get_credits(),
                     "tanks": temp
                 }
@@ -52,7 +52,9 @@ def encoder(all_player_list):
 
     with open('player_list.json', 'r') as file:
         player_list = json.load(file)
+        count = 0
         for i_item in player_list['player']:
-            json.dumps(i_item, cls=MyEncoder)
+            json.dumps(all_player_list[count], cls=MyEncoder)
         with open('player_list.json', 'w') as w:
             json.dump(player_list, w, indent=2)
+
