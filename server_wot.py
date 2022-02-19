@@ -3,17 +3,19 @@ import json
 
 
 class Player:
+
     def __init__(self, nickname, won_battles, battles, credits, tank):
         self.__nickname = nickname
         self.__won_battles = won_battles
         self.__battles = battles
         self.__credits = credits
         self.__tanks = tank
+        self.__win_rate = (self.__won_battles / self.__battles) * 100
 
     def get_nickname(self):
         return self.__nickname
 
-    def get_won_battle(self):
+    def get_won_battles(self):
         return self.__won_battles
 
     def get_battle(self):
@@ -24,6 +26,70 @@ class Player:
 
     def get_tanks(self):
         return self.__tanks
+
+    def lets_battle(self, server):
+        print('Choose the tank:')
+        tanks = self.__tanks
+        for i in range(len(tanks)):
+            print(f'{i} - {tanks[i].get_name()}')
+        print(f'{len(tanks)} - exit')
+        choice = int(input())
+        if choice == len(tanks):
+            return
+        elif 0 <= choice < len(tanks):
+            my_tank = tanks[choice]
+            earned_credits, battle_won = server.start_battle(my_tank, self)
+            self.__credits += earned_credits
+            print(f'Earned {earned_credits} credits per battle')
+            self.__won_battles += battle_won
+            self.__battles += 1
+            self.__win_rate = (self.__won_battles / self.__battles) * 100
+        else:
+            print('WRONG INPUT!')
+            self.lets_battle(server)
+        # save to Server!
+
+    def buy_tank(self, server):
+        tanks = server.get_tank_list()
+        available_to_purchase = []
+        for c in tanks:
+            if c not in self.__tanks:
+                available_to_purchase.append(c)
+            else:
+                continue
+        print('Available to purchase tanks:')
+        for i in range(len(tanks)):
+            print(f'{i} - {available_to_purchase[i].get_name()} - {available_to_purchase[i].get_price()}')
+        print(f'{len(tanks)} - exit')
+        choice = int(input())
+        if choice == len(tanks):
+            return
+        elif 0 <= choice < len(tanks):
+            new_tank = tanks[choice]
+            if self.__credits >= new_tank.get_price():
+                self.__credits -= new_tank.get_price()
+                self.__tanks.append(new_tank)
+            else:
+                print('Not enough credits :(')
+                self.buy_tank(server)
+        else:
+            print('WRONG INPUT!')
+            self.buy_tank(server)
+        # save to Server!
+
+    def change_nickname(self):
+        new_nickname = input('Enter new nickname: ')
+        print('Are you sure? Changing your nickname costs 50_000 credits')
+        print('0 - YES\n1 - NO')
+        choice = int(input())
+        if choice == 0:
+            self.__nickname = new_nickname
+            self.__credits -= 50_000
+        elif choice == 1:
+            return
+        else:
+            print('WRONG INPUT!')
+            self.change_nickname()
 
 
 class Tank:
@@ -129,6 +195,10 @@ class Server:
 
     def get_tank_list(self):
         return self.__tank_list
+
+    def start_battle(self, tank, player):
+        earned_credits, battle_won = 0, 0    # temporary value, need to be changed later
+        return earned_credits, battle_won
 
 
 class Battle:
