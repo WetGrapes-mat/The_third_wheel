@@ -1,6 +1,7 @@
 from __future__ import annotations
 import random
 import json
+import time
 
 
 class Player:
@@ -242,9 +243,11 @@ class Server:
         for i in range(5):
             team_two.append(BattlePlayer(Bot(self)))
 
+
         battle: Battle = Battle(team_one, team_two, self.choose_map())
-        team_one, team_two = battle.simulate_battle(team_one, team_two)
+        team_one, team_two = battle.simulate_battle()
         hp: int = 0
+          
         for p in team_one:
             hp += p.get_heal_points()
         if hp > 0:
@@ -266,18 +269,111 @@ class Server:
 
 
 class Battle:
-    def __init__(self, teamone: list[BattlePlayer], teamtwo: list[BattlePlayer], mapname: str) -> None:
+
+    def __init__(self, mapname, teamone, teamtwo):
         self.__team_one = teamone
         self.__team_two = teamtwo
         self.__map_name = mapname
-        self.__team_one_frags: list[int] = [0] * 5
-        self.__team_two_frags: list[int] = [0] * 5
-        self.__team_one_damage: list[int] = [0] * 5
-        self.__team_two_damage: list[int] = [0] * 5
+        self.__team_one_frags = [0] * 5
+        self.__team_two_frags = [0] * 5
+        self.__team_one_damage = [0] * 5
+        self.__team_two_damage = [0] * 5
 
-    def simulate_battle(self, team_one: list[BattlePlayer], team_two: list[BattlePlayer]) -> tuple:
+    def simulate_battle(self):
+        print('team_one')
+        print('-'*30)
+        for i_1 in self.__team_one:
+            print('{} -- {}'.format(i_1.get_nickname().rstrip(), i_1.get_tank().get_name()))
+        print('='*30)
+        print('team_two')
+        print('-'*30)
+        for i_2 in self.__team_two:
+            print('{} -- {}'.format(i_2.get_nickname().rstrip(), i_2.get_tank().get_name()))
+        print('+=' * 25)
+        print('{:^46}'.format('Lets Battle'))
+        print('+=' * 25)
+        while True:
+            hp_1 = 0
+            hp_2 = 0
+            for _1 in self.__team_one:
+                hp_1 += _1.get_heal_points()
+            for _2 in self.__team_two:
+                hp_2 += _2.get_heal_points()
 
-        return team_one, team_two
+            if hp_1 == 0 or hp_2 == 0:
+                if hp_1 == 0:
+                    print('{:^46}'.format('TEAM TWO WIN'))
+                elif hp_2 == 0:
+                    print('{:^46}'.format('TEAM ONE WIN'))
+                break
+
+            curr_dmg_1 = {}
+            curr_dmg_2 = {}
+            curr_dmg = {}
+
+            for attacking_1 in self.__team_one:
+                if attacking_1.get_heal_points() > 0:
+                    while True:
+                        protection_1 = random.choice(self.__team_two)
+                        if protection_1.get_heal_points() > 0:
+                            break
+                    temp = random.randint(1, 100)
+                    if temp >= 40:
+                        luck = True
+                    else:
+                        luck = False
+                    if luck:
+                        a1 = attacking_1.get_tank().get_force() + (attacking_1.get_tank().get_force() *
+                                                                    (random.randint(-25, 25)/100))
+                        a2 = (1 - (attacking_1.get_winrate() / 100))
+                        a3 = (protection_1.get_winrate() / 100)
+                        dmg = round(a1 * 4 * a2 * a3)
+                        curr_dmg_1[dmg] = [attacking_1, protection_1]
+
+            for attacking_2 in self.__team_two:
+                if attacking_2.get_heal_points() > 0:
+                    while True:
+                        protection_2 = random.choice(self.__team_one)
+                        if protection_2.get_heal_points() > 0:
+                            break
+                    temp = random.randint(1, 100)
+                    if temp >= 40:
+                        luck = True
+                    else:
+                        luck = False
+                    if luck:
+                        a1 = (attacking_2.get_tank().get_force() + (attacking_2.get_tank().get_force() *
+                                                                    (random.randint(-25, 25)/100)))
+                        a2 = (1 - (attacking_2.get_winrate() / 100))
+                        a3 = (protection_2.get_winrate() / 100)
+                        dmg = round(a1 * 4 * a2 * a3)
+                        curr_dmg_2[dmg] = [attacking_2, protection_2]
+
+            curr_dmg.update(curr_dmg_1)
+            curr_dmg.update(curr_dmg_2)
+
+            for i in range(len(curr_dmg)):
+                damage = random.choice(list(curr_dmg.keys()))
+                pair = curr_dmg[damage]
+                if pair[0].get_heal_points() > 0 and pair[1].get_heal_points() > 0:
+                    if pair[1].get_heal_points() > damage:
+                        pair[1].take_self_damage(damage)
+                        pair[0].take_damage(damage)
+                        print('{:^15} dmg done {:^5} {:^15}'.format(pair[0].get_nickname().rstrip(), damage,
+                                                                    pair[1].get_nickname().rstrip()))
+                    elif pair[1].get_heal_points() < damage:
+                        pair[1].take_self_damage(pair[1].get_heal_points())
+                        pair[0].take_damage(pair[1].get_heal_points())
+                        pair[0].take_frags()
+                        print('{:^15}  {:^11}  {:^15}'.format(pair[0].get_nickname().rstrip(), 'Killed',
+                                                              pair[1].get_nickname().rstrip()))
+                del curr_dmg[damage]
+            else:
+                print('+='*25)
+
+
+            # time.sleep(1)
+        return self.__team_one, self.__team_two
 
 
 class BattlePlayer:
@@ -291,22 +387,27 @@ class BattlePlayer:
             self.__damage: int = 0
             self.__frags: int = 0
         elif len(args) == 2:
-            self.__tank: Tank = args[0]
-            self.__heal_points: int = args[0].get_heal_points()
-            self.__win_rate: float = args[1].get_winrate()
-            self.__nickname: str = args[1].get_nickname()
-            self.__damage: int = 0
-            self.__frags: int = 0
+
+            self.__tank = args[0]
+            self.__heal_points = args[0].get_heal_points()
+            self.__win_rate = args[1].get_winrate()
+            self.__nickname = args[1].get_nickname()
+            self.__damage = 0
+            self.__frags = 0
+            
 
     def repair_tank(self) -> int:
         payment: int = (self.get_heal_points() - self.__heal_points) * 33
+
         return payment
 
     def take_self_damage(self, damage: int) -> None:
         self.__heal_points -= damage
 
-    def take_frags(self, more_frags: int) -> None:
-        self.__frags += more_frags
+
+    def take_frags(self):
+        self.__frags += 1
+
 
     def take_damage(self, more_damage: int) -> None:
         self.__damage += more_damage
