@@ -1,3 +1,4 @@
+from __future__ import annotations
 import random
 import json
 import time
@@ -5,43 +6,43 @@ import time
 
 class Player:
 
-    def __init__(self, nickname, won_battles, battles, credits, tank):
+    def __init__(self, nickname: str, won_battles: int, battles: int, credits: int, tank: list[Tank]) -> None:
         self.__nickname = nickname
         self.__won_battles = won_battles
         self.__battles = battles
         self.__credits = credits
         self.__tanks = tank
-        self.__win_rate = (self.__won_battles / self.__battles) * 100
+        self.__win_rate: float = (self.__won_battles / self.__battles) * 100
 
-    def get_nickname(self):
+    def get_nickname(self) -> str:
         return self.__nickname
 
-    def get_winrate(self):
+    def get_winrate(self) -> float:
         return self.__win_rate
 
-    def get_won_battles(self):
+    def get_won_battles(self) -> int:
         return self.__won_battles
 
-    def get_battle(self):
+    def get_battle(self) -> int:
         return self.__battles
 
-    def get_credits(self):
+    def get_credits(self) -> int:
         return self.__credits
 
-    def get_tanks(self):
+    def get_tanks(self) -> list:
         return self.__tanks
 
-    def lets_battle(self, server):
+    def lets_battle(self, server: Server) -> None:
         print('Choose the tank:')
-        tanks = self.__tanks
+        tanks: list[Tank] = self.__tanks
         for i in range(len(tanks)):
             print(f'{i} - {tanks[i].get_name()}')
         print(f'{len(tanks)} - exit')
-        choice = int(input())
+        choice: int = int(input())
         if choice == len(tanks):
             return
         elif 0 <= choice < len(tanks):
-            my_tank = tanks[choice]
+            my_tank: Tank = tanks[choice]
             earned_credits, battle_won = server.start_battle(my_tank, self)
             self.__credits += earned_credits
             print(f'Earned {earned_credits} credits per battle')
@@ -53,9 +54,9 @@ class Player:
             self.lets_battle(server)
         # save to Server!
 
-    def buy_tank(self, server):
-        tanks = server.get_tank_list()
-        available_to_purchase = []
+    def buy_tank(self, server: Server) -> None:
+        tanks: list[Tank] = server.get_tank_list()
+        available_to_purchase: list[Tank] = []
         for c in tanks:
             if c not in self.__tanks:
                 available_to_purchase.append(c)
@@ -65,11 +66,11 @@ class Player:
         for i in range(len(tanks)):
             print(f'{i} - {available_to_purchase[i].get_name()} - {available_to_purchase[i].get_price()}')
         print(f'{len(tanks)} - exit')
-        choice = int(input())
+        choice: int = int(input())
         if choice == len(tanks):
             return
         elif 0 <= choice < len(tanks):
-            new_tank = tanks[choice]
+            new_tank: Tank = tanks[choice]
             if self.__credits >= new_tank.get_price():
                 self.__credits -= new_tank.get_price()
                 self.__tanks.append(new_tank)
@@ -81,11 +82,11 @@ class Player:
             self.buy_tank(server)
         # save to Server!
 
-    def change_nickname(self):
-        new_nickname = input('Enter new nickname: ')
+    def change_nickname(self) -> None:
+        new_nickname: str = input('Enter new nickname: ')
         print('Are you sure? Changing your nickname costs 50_000 credits')
         print('0 - YES\n1 - NO')
-        choice = int(input())
+        choice: int = int(input())
         if choice == 0:
             self.__nickname = new_nickname
             self.__credits -= 50_000
@@ -97,64 +98,64 @@ class Player:
 
 
 class Tank:
-    def __init__(self, name, id, price, hp, force):
+    def __init__(self, name: str, id: int, price: int, hp: int, force: int) -> None:
         self.__name = name
         self.__id = id
         self.__price = price
         self.__heal_points = hp
         self.__force = force
 
-    def get_name(self):
+    def get_name(self) -> str:
         return self.__name
 
-    def get_id(self):
+    def get_id(self) -> int:
         return self.__id
 
-    def get_price(self):
+    def get_price(self) -> int:
         return self.__price
 
-    def get_heal_points(self):
+    def get_heal_points(self) -> int:
         return self.__heal_points
 
-    def get_force(self):
+    def get_force(self) -> int:
         return self.__force
 
 
 class Bot:
-    __nickname = ''
-    __tank = None
-    __win_rate = 0    # float
+    __nickname: str = ''
+    __tank: Tank = None    # ???
+    __win_rate: float = 0    # float
 
-    def __init__(self, server):
+    def __init__(self, server: Server) -> None:
         self.generate_nickname()
         self.generate_tank(server)
         self.generate_win_rate()
 
-    def get_win_rate(self):
+    def get_win_rate(self) -> float:
         return self.__win_rate
 
-    def get_nickname(self):
+    def get_nickname(self) -> str:
         return self.__nickname
 
-    def get_tank(self):
+    def get_tank(self) -> Tank:
         return self.__tank
 
-    def generate_win_rate(self):
-        choice = random.randint(0, 100)
+    def generate_win_rate(self) -> None:
+        choice: int = random.randint(0, 100)
         if 0 <= choice < 10:
-            i = random.randint(0, 1)
+            i: int = random.randint(0, 1)
             if i == 0:
                 self.__win_rate = random.randint(30, 40)
             elif i == 1:
                 self.__win_rate = random.randint(60, 70)
         elif 10 <= choice < 30:
-            i = random.randint(0, 1)
+            i: int = random.randint(0, 1)
             if i == 0:
                 self.__win_rate = random.randint(40, 43)
             elif i == 1:
                 self.__win_rate = random.randint(57, 60)
         elif 30 <= choice < 55:
-            i = random.randint(0, 1)
+            i: int = random.randint(0, 1)
             if i == 0:
                 self.__win_rate = random.randint(43, 47)
             elif i == 1:
@@ -162,23 +163,23 @@ class Bot:
         elif 55 <= choice <= 100:
             self.__win_rate = random.randint(47, 53)
 
-    def generate_nickname(self):
+    def generate_nickname(self) -> None:
         with open('nickname.txt', 'r') as file_nickname:
             self.__nickname = random.choice(file_nickname.readlines())
 
-    def generate_tank(self, server):
+    def generate_tank(self, server: Server) -> None:
         self.__tank = random.choice(server.get_tank_list())
 
 
 class Server:
-    __player_list = []
-    __tank_list = []
+    __player_list: list[Player] = []
+    __tank_list: list[Tank] = []
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.get_players_from_file()
         self.get_tanks_from_file()
 
-    def get_tanks_from_file(self):
+    def get_tanks_from_file(self) -> None:
         with open('tank_list.json', 'r') as file_tank:
             tank_list = json.load(file_tank)
             for tank in tank_list['tanks']:
@@ -190,9 +191,9 @@ class Server:
                     force=tank['tank_force']
                 ))
 
-    def get_players_from_file(self):
+    def get_players_from_file(self) -> None:
         with open('player_list.json', 'r') as file_player:
-            temp_tank = []
+            temp_tank: list[Tank] = []
             player_list = json.load(file_player)
             for player in player_list['player']:
                 for id_tank in self.__tank_list:
@@ -208,11 +209,11 @@ class Server:
                 temp_tank.clear()
 
     @staticmethod
-    def set_players_in_file(list_all_players):
+    def set_players_in_file(list_all_players: list) -> None:
         with open('player_list.json', 'r') as file:
-            counter = 0
+            counter: int = 0
             player_list = json.load(file)
-            temp = []
+            temp: list[int] = []
             for i_item in player_list['player']:
                 i_item['nickname'] = list_all_players[counter].get_nickname()
                 i_item['won_battles'] = list_all_players[counter].get_won_battle()
@@ -226,46 +227,49 @@ class Server:
             with open('player_list.json', 'w') as w:
                 json.dump(player_list, w, indent=2)
 
-    def get_player_list(self):
+    def get_player_list(self) -> list[Player]:
         return self.__player_list
 
-    def get_tank_list(self):
+    def get_tank_list(self) -> list[Tank]:
         return self.__tank_list
 
-    def start_battle(self, tank, player):
-        team_one = []
-        team_two = []
-        active_player = BattlePlayer(player, tank)
+    def start_battle(self, tank: Tank, player: Player) -> tuple:
+        team_one: list[BattlePlayer] = []
+        team_two: list[BattlePlayer] = []
+        active_player: BattlePlayer = BattlePlayer(player, tank)
         team_one.append(active_player)
         for i in range(4):
             team_one.append(BattlePlayer(Bot(self)))
         for i in range(5):
             team_two.append(BattlePlayer(Bot(self)))
 
-        battle = Battle(team_one, team_two, self.choose_map())
+
+        battle: Battle = Battle(team_one, team_two, self.choose_map())
         team_one, team_two = battle.simulate_battle()
-        hp = 0
+        hp: int = 0
+          
         for p in team_one:
             hp += p.get_heal_points()
         if hp > 0:
-            battle_won = 1
+            battle_won: int = 1
         else:
-            battle_won = 0
-        earned_credits = self.count_prizes(team_one[0])
+            battle_won: int = 0
+        earned_credits: int = self.count_prizes(team_one[0])
         return earned_credits, battle_won
 
-    def choose_map(self):
-        maps = ['Prohorovka', 'Malinovka', 'Himelsdorf', 'Ruinberg', 'Minsk', 'Berlin']
-        mapname = random.choice(maps)
+    def choose_map(self) -> str:
+        maps: list[str] = ['Prohorovka', 'Malinovka', 'Himelsdorf', 'Ruinberg', 'Minsk', 'Berlin']
+        mapname: str = random.choice(maps)
         return mapname
 
-    def count_prizes(self, battle_player):
-        earned_credits = 20_000 * battle_player.get_frags() +\
+    def count_prizes(self, battle_player: BattlePlayer) -> int:
+        earned_credits: int = 20_000 * battle_player.get_frags() +\
                          100 * battle_player.get_damage() - battle_player.repair_tank()
         return earned_credits
 
 
 class Battle:
+
     def __init__(self, mapname, teamone, teamtwo):
         self.__team_one = teamone
         self.__team_two = teamtwo
@@ -367,55 +371,61 @@ class Battle:
             else:
                 print('+='*25)
 
+
             # time.sleep(1)
         return self.__team_one, self.__team_two
 
 
 class BattlePlayer:
     # arg (Bot) or (Tank, Player)
-    def __init__(self, *args):
+    def __init__(self, *args) -> None:    # ???
         if len(args) == 1:
-            self.__tank = args[0].get_tank()
-            self.__heal_points = self.__tank.get_heal_points()
-            self.__win_rate = args[0].get_win_rate()
-            self.__nickname = args[0].get_nickname()
-            self.__damage = 0
-            self.__frags = 0
+            self.__tank: Tank = args[0].get_tank()
+            self.__heal_points: int = self.__tank.get_heal_points()
+            self.__win_rate: float = args[0].get_win_rate()
+            self.__nickname: str = args[0].get_nickname()
+            self.__damage: int = 0
+            self.__frags: int = 0
         elif len(args) == 2:
+
             self.__tank = args[0]
             self.__heal_points = args[0].get_heal_points()
             self.__win_rate = args[1].get_winrate()
             self.__nickname = args[1].get_nickname()
             self.__damage = 0
             self.__frags = 0
+            
 
-    def repair_tank(self):
-        payment = (self.get_heal_points() - self.__heal_points) * 33
+    def repair_tank(self) -> int:
+        payment: int = (self.get_heal_points() - self.__heal_points) * 33
+
         return payment
 
-    def take_self_damage(self, damage):
+    def take_self_damage(self, damage: int) -> None:
         self.__heal_points -= damage
+
 
     def take_frags(self):
         self.__frags += 1
 
-    def take_damage(self, more_damage):
+
+    def take_damage(self, more_damage: int) -> None:
         self.__damage += more_damage
 
-    def get_winrate(self):
+    def get_winrate(self) -> float:
         return self.__win_rate
 
-    def get_heal_points(self):
+    def get_heal_points(self) -> int:
         return self.__heal_points
 
-    def get_tank(self):
+    def get_tank(self) -> Tank:
         return self.__tank
 
-    def get_nickname(self):
+    def get_nickname(self) -> str:
         return self.__nickname
 
-    def get_damage(self):
+    def get_damage(self) -> int:
         return self.__damage
 
-    def get_frags(self):
+    def get_frags(self) -> int:
         return self.__frags
