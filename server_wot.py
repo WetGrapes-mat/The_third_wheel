@@ -243,7 +243,6 @@ class Server:
         for i in range(5):
             team_two.append(BattlePlayer(Bot(self)))
 
-
         battle: Battle = Battle(team_one, team_two, self.choose_map())
         team_one, team_two = battle.simulate_battle()
         hp: int = 0
@@ -371,7 +370,6 @@ class Battle:
             else:
                 print('+='*25)
 
-
             # time.sleep(1)
         return self.__team_one, self.__team_two
 
@@ -387,14 +385,12 @@ class BattlePlayer:
             self.__damage: int = 0
             self.__frags: int = 0
         elif len(args) == 2:
-
             self.__tank = args[0]
             self.__heal_points = args[0].get_heal_points()
             self.__win_rate = args[1].get_winrate()
             self.__nickname = args[1].get_nickname()
             self.__damage = 0
             self.__frags = 0
-            
 
     def repair_tank(self) -> int:
         payment: int = (self.get_heal_points() - self.__heal_points) * 33
@@ -404,10 +400,8 @@ class BattlePlayer:
     def take_self_damage(self, damage: int) -> None:
         self.__heal_points -= damage
 
-
     def take_frags(self):
         self.__frags += 1
-
 
     def take_damage(self, more_damage: int) -> None:
         self.__damage += more_damage
