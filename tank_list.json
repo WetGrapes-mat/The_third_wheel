@@ -3,7 +3,7 @@
     {
       "tank_name": "T-34",
       "tank_id" : 1,
-      "tank_price" : 300000,
+      "tank_price" : 30000,
       "tank_hp" : 100,
       "tank_force" : 30
     },

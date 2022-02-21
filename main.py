@@ -1,13 +1,15 @@
-from server_wot import*
+from server_wot import Server
+
 s = Server()
 
-b1 = BattlePlayer(Bot(s))
-b2 = BattlePlayer(Bot(s))
-b3 = BattlePlayer(Bot(s))
-b4 = BattlePlayer(Bot(s))
+player = s.get_player_list()[0]
+
+player.lets_battle(s)
 
 
-t1 = [b1, b2]
-t2 = [b3, b4]
-battle = Battle(t1, t2, 'qwerty')
-a, b = battle.simulate_battle()
+# player.change_nickname()
+# player.buy_tank(s)
+
+
+s.set_players_in_file(s.get_player_list())
+

@@ -1,11 +1,12 @@
 {
   "player": [
     {
-      "nickname": "Bob",
-      "won_battles": 100,
-      "battles": 210,
-      "credits": 100000,
+      "nickname": "Tim",
+      "won_battles": 103,
+      "battles": 219,
+      "credits": 226400,
       "tanks": [
+        1,
         2
       ]
     },
