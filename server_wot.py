@@ -279,7 +279,7 @@ class Battle:
         self.__team_one_damage = [0] * 5
         self.__team_two_damage = [0] * 5
 
-    def simulate_battle(self):
+    def simulate_battle(self) -> tuple:
         print('team_one')
         print('-'*30)
         for i_1 in self.__team_one:
@@ -293,8 +293,8 @@ class Battle:
         print('{:^46}'.format('Lets Battle'))
         print('+=' * 25)
         while True:
-            hp_1 = 0
-            hp_2 = 0
+            hp_1: int = 0
+            hp_2: int = 0
             for _1 in self.__team_one:
                 hp_1 += _1.get_heal_points()
             for _2 in self.__team_two:
@@ -307,46 +307,46 @@ class Battle:
                     print('{:^46}'.format('TEAM ONE WIN'))
                 break
 
-            curr_dmg_1 = {}
-            curr_dmg_2 = {}
-            curr_dmg = {}
+            curr_dmg_1: dict = {}
+            curr_dmg_2: dict = {}
+            curr_dmg: dict = {}
 
             for attacking_1 in self.__team_one:
                 if attacking_1.get_heal_points() > 0:
                     while True:
-                        protection_1 = random.choice(self.__team_two)
+                        protection_1: BattlePlayer = random.choice(self.__team_two)
                         if protection_1.get_heal_points() > 0:
                             break
-                    temp = random.randint(1, 100)
+                    temp: int = random.randint(1, 100)
                     if temp >= 40:
                         luck = True
                     else:
                         luck = False
                     if luck:
-                        a1 = attacking_1.get_tank().get_force() + (attacking_1.get_tank().get_force() *
-                                                                    (random.randint(-25, 25)/100))
-                        a2 = (1 - (attacking_1.get_winrate() / 100))
-                        a3 = (protection_1.get_winrate() / 100)
-                        dmg = round(a1 * 4 * a2 * a3)
+                        a1: float = attacking_1.get_tank().get_force() + \
+                                    (attacking_1.get_tank().get_force() * (random.randint(-25, 25)/100))
+                        a2: float = (1 - (attacking_1.get_winrate() / 100))
+                        a3: float = (protection_1.get_winrate() / 100)
+                        dmg: int = round(a1 * 4 * a2 * a3)
                         curr_dmg_1[dmg] = [attacking_1, protection_1]
 
             for attacking_2 in self.__team_two:
                 if attacking_2.get_heal_points() > 0:
                     while True:
-                        protection_2 = random.choice(self.__team_one)
+                        protection_2: BattlePlayer = random.choice(self.__team_one)
                         if protection_2.get_heal_points() > 0:
                             break
-                    temp = random.randint(1, 100)
+                    temp: int = random.randint(1, 100)
                     if temp >= 40:
                         luck = True
                     else:
                         luck = False
                     if luck:
-                        a1 = (attacking_2.get_tank().get_force() + (attacking_2.get_tank().get_force() *
-                                                                    (random.randint(-25, 25)/100)))
-                        a2 = (1 - (attacking_2.get_winrate() / 100))
-                        a3 = (protection_2.get_winrate() / 100)
-                        dmg = round(a1 * 4 * a2 * a3)
+                        a1: float = (attacking_2.get_tank().get_force() +
+                                     (attacking_2.get_tank().get_force() * (random.randint(-25, 25)/100)))
+                        a2: float = (1 - (attacking_2.get_winrate() / 100))
+                        a3: float = (protection_2.get_winrate() / 100)
+                        dmg: int = round(a1 * 4 * a2 * a3)
                         curr_dmg_2[dmg] = [attacking_2, protection_2]
 
             curr_dmg.update(curr_dmg_1)
@@ -401,7 +401,7 @@ class BattlePlayer:
     def take_self_damage(self, damage: int) -> None:
         self.__heal_points -= damage
 
-    def take_frags(self):
+    def take_frags(self) -> None:
         self.__frags += 1
 
     def take_damage(self, more_damage: int) -> None:

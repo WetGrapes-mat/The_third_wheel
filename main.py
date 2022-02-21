@@ -13,4 +13,3 @@ player.lets_battle(s)
 
 s.set_players_in_file(s.get_player_list())
 
-
