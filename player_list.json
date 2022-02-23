@@ -11,10 +11,10 @@
       ]
     },
     {
-      "nickname": "Tom",
+      "nickname": "Bob",
       "won_battles": 204,
-      "battles": 311,
-      "credits": 331100,
+      "battles": 312,
+      "credits": 283200,
       "tanks": [
         1,
         3

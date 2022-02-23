@@ -3,10 +3,10 @@ from server_wot import*
 
 def menu():
     print('-' * 20)
-    print('1 - choose an account')
-    print('2 - start battle')
-    print('3 - buy tank')
-    print('4 - change nickname')
+    print('1 - start battle')
+    print('2 - buy tank')
+    print('3 - change nickname')
+    print('4 - choose an account')
     print('0 - exit')
     print('-' * 20, '\n')
 
@@ -37,16 +37,16 @@ while True:
     choice = int(input())
     try:
         if choice == 1:
-            player = choose_account(s)
-            menu()
-        elif choice == 2:
             player.lets_battle(s)
             menu()
-        elif choice == 3:
+        elif choice == 2:
             player.buy_tank(s)
             menu()
-        elif choice == 4:
+        elif choice == 3:
             player.change_nickname(s)
+            menu()
+        elif choice == 4:
+            player = choose_account(s)
             menu()
         elif choice == 0:
             break

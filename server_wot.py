@@ -65,9 +65,9 @@ class Player:
         print('Available to purchase tanks:')
         for i in range(len(available_to_purchase)):
             print(f'{i} - {available_to_purchase[i].get_name()} - {available_to_purchase[i].get_price()}')
-        print(f'{len(tanks)} - exit')
+        print(f'{len(available_to_purchase)} - exit')
         choice: int = int(input())
-        if choice == len(tanks):
+        if choice == len(available_to_purchase):
             return
         elif 0 <= choice < len(available_to_purchase):
             new_tank: Tank = available_to_purchase[choice]
