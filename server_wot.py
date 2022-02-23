@@ -69,8 +69,8 @@ class Player:
         choice: int = int(input())
         if choice == len(tanks):
             return
-        elif 0 <= choice < len(tanks):
-            new_tank: Tank = tanks[choice]
+        elif 0 <= choice < len(available_to_purchase):
+            new_tank: Tank = available_to_purchase[choice]
             if self.__credits >= new_tank.get_price():
                 self.__credits -= new_tank.get_price()
                 self.__tanks.append(new_tank)
