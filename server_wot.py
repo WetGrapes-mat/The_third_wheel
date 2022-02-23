@@ -377,7 +377,7 @@ class Battle:
 
 
 class BattlePlayer:
-    # arg (Bot) or (Tank, Player)
+    # arg (Bot) or (Player, Tank)
     def __init__(self, *args) -> None:    # ???
         if len(args) == 1:
             self.__tank: Tank = args[0].get_tank()
