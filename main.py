@@ -37,6 +37,7 @@ def choose_account(s: Server) -> Player:
 
 player = choose_account(s)
 menu()
+
 while True:
     choice = int(input())
     try:
