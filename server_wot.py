@@ -165,7 +165,7 @@ class Bot:
             self.__win_rate = random.randint(47, 53)
 
     def generate_nickname(self) -> None:
-        with open('nickname.txt', 'r') as file_nickname:
+        with open('nickname.txt', 'r', encoding="utf-8") as file_nickname:
             self.__nickname = random.choice(file_nickname.readlines())
 
     def generate_tank(self, server: Server) -> None:
@@ -180,9 +180,8 @@ class Server:
         self.get_tanks_from_file()
         self.get_players_from_file()
 
-
     def get_tanks_from_file(self) -> None:
-        with open('tank_list.json', 'r') as file_tank:
+        with open('tank_list.json', 'r', encoding="utf-8") as file_tank:
             tank_list = json.load(file_tank)
             for tank in tank_list['tanks']:
                 self.__tank_list.append(Tank(
@@ -194,7 +193,7 @@ class Server:
                 ))
 
     def get_players_from_file(self) -> None:
-        with open('player_list.json', 'r') as file_player:
+        with open('player_list.json', 'r', encoding="utf-8") as file_player:
             temp_tank: list[Tank] = []
             player_list = json.load(file_player)
             for player in player_list['player']:
@@ -212,7 +211,7 @@ class Server:
 
     @staticmethod
     def set_players_in_file(list_all_players: list) -> None:
-        with open('player_list.json', 'r') as file:
+        with open('player_list.json', 'r', encoding="utf-8") as file:
             counter: int = 0
             player_list = json.load(file)
             temp: list[int] = []
@@ -226,7 +225,7 @@ class Server:
                 i_item['tanks'] = temp
                 temp = []
                 counter += 1
-            with open('player_list.json', 'w') as w:
+            with open('player_list.json', 'w', encoding="utf-8") as w:
                 json.dump(player_list, w, indent=2)
 
     def get_player_list(self) -> list[Player]:
