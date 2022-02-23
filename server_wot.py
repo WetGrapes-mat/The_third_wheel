@@ -63,7 +63,7 @@ class Player:
             else:
                 continue
         print('Available to purchase tanks:')
-        for i in range(len(tanks)):
+        for i in range(len(available_to_purchase)):
             print(f'{i} - {available_to_purchase[i].get_name()} - {available_to_purchase[i].get_price()}')
         print(f'{len(tanks)} - exit')
         choice: int = int(input())
@@ -177,8 +177,9 @@ class Server:
     __tank_list: list[Tank] = []
 
     def __init__(self) -> None:
-        self.get_players_from_file()
         self.get_tanks_from_file()
+        self.get_players_from_file()
+
 
     def get_tanks_from_file(self) -> None:
         with open('tank_list.json', 'r') as file_tank:
@@ -197,17 +198,17 @@ class Server:
             temp_tank: list[Tank] = []
             player_list = json.load(file_player)
             for player in player_list['player']:
-                for id_tank in self.__tank_list:
-                    if id_tank.get_id() in player['tanks']:
-                        temp_tank.append(id_tank)
+                for tank in self.__tank_list:
+                    if tank.get_id() in player['tanks']:
+                        temp_tank.append(tank)
                 self.__player_list.append(Player(
                     nickname=player['nickname'],
                     won_battles=player['won_battles'],
                     battles=player['battles'],
                     credits=player['credits'],
-                    tank=temp_tank.copy()
+                    tank=temp_tank
                 ))
-                temp_tank.clear()
+                temp_tank = []
 
     @staticmethod
     def set_players_in_file(list_all_players: list) -> None:
@@ -217,7 +218,7 @@ class Server:
             temp: list[int] = []
             for i_item in player_list['player']:
                 i_item['nickname'] = list_all_players[counter].get_nickname()
-                i_item['won_battles'] = list_all_players[counter].get_won_battle()
+                i_item['won_battles'] = list_all_players[counter].get_won_battles()
                 i_item['battles'] = list_all_players[counter].get_battle()
                 i_item['credits'] = list_all_players[counter].get_credits()
                 for i in list_all_players[counter].get_tanks():
@@ -270,7 +271,7 @@ class Server:
 
 class Battle:
 
-    def __init__(self, mapname, teamone, teamtwo):
+    def __init__(self,  teamone, teamtwo, mapname):
         self.__team_one = teamone
         self.__team_two = teamtwo
         self.__map_name = mapname
@@ -386,10 +387,10 @@ class BattlePlayer:
             self.__damage: int = 0
             self.__frags: int = 0
         elif len(args) == 2:
-            self.__tank = args[0]
-            self.__heal_points = args[0].get_heal_points()
-            self.__win_rate = args[1].get_winrate()
-            self.__nickname = args[1].get_nickname()
+            self.__tank = args[1]
+            self.__heal_points = args[1].get_heal_points()
+            self.__win_rate = args[0].get_winrate()
+            self.__nickname = args[0].get_nickname()
             self.__damage = 0
             self.__frags = 0
 
