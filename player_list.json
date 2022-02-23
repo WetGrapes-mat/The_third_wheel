@@ -1,19 +1,20 @@
 {
   "player": [
     {
-      "nickname": "Bob",
-      "won_battles": 100,
-      "battles": 210,
-      "credits": 100000,
+      "nickname": "Tim",
+      "won_battles": 104,
+      "battles": 220,
+      "credits": 224000,
       "tanks": [
+        1,
         2
       ]
     },
     {
-      "nickname": "Tom",
-      "won_battles": 200,
-      "battles": 300,
-      "credits": 200000,
+      "nickname": "Bob",
+      "won_battles": 204,
+      "battles": 312,
+      "credits": 283200,
       "tanks": [
         1,
         3
