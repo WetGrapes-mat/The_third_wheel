@@ -49,10 +49,10 @@ class Player:
             self.__won_battles += battle_won
             self.__battles += 1
             self.__win_rate = (self.__won_battles / self.__battles) * 100
+            Server.set_players_in_file(server.get_player_list())
         else:
             print('WRONG INPUT!')
             self.lets_battle(server)
-        # save to Server!
 
     def buy_tank(self, server: Server) -> None:
         tanks: list[Tank] = server.get_tank_list()
@@ -74,15 +74,15 @@ class Player:
             if self.__credits >= new_tank.get_price():
                 self.__credits -= new_tank.get_price()
                 self.__tanks.append(new_tank)
+                Server.set_players_in_file(server.get_player_list())
             else:
                 print('Not enough credits :(')
                 self.buy_tank(server)
         else:
             print('WRONG INPUT!')
             self.buy_tank(server)
-        # save to Server!
 
-    def change_nickname(self) -> None:
+    def change_nickname(self, server) -> None:
         new_nickname: str = input('Enter new nickname: ')
         print('Are you sure? Changing your nickname costs 50_000 credits')
         print('0 - YES\n1 - NO')
@@ -90,11 +90,12 @@ class Player:
         if choice == 0:
             self.__nickname = new_nickname
             self.__credits -= 50_000
+            Server.set_players_in_file(server.get_player_list())
         elif choice == 1:
             return
         else:
             print('WRONG INPUT!')
-            self.change_nickname()
+            self.change_nickname(server)
 
 
 class Tank:
