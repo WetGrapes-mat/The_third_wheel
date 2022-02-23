@@ -27,7 +27,11 @@ def choose_account(s: Server) -> Player:
             print(tank.get_name())
         print('*'*20)
     choice: int = int(input())
-    player = s.get_player_list()[choice]
+    try:
+        player = s.get_player_list()[choice]
+    except IndexError:
+        print('WRONG INPUT!')
+        player = choose_account(s)
     return player
 
 

@@ -371,7 +371,7 @@ class Battle:
             else:
                 print('+='*25)
 
-            # time.sleep(1)
+            time.sleep(1)
         return self.__team_one, self.__team_two
 
 
