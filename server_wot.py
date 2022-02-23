@@ -39,18 +39,19 @@ class Player:
             print(f'{i} - {tanks[i].get_name()}')
         print(f'{len(tanks)} - exit')
         choice: int = int(input())
-        if choice == len(tanks):
-            return
-        elif 0 <= choice < len(tanks):
-            my_tank: Tank = tanks[choice]
-            earned_credits, battle_won = server.start_battle(my_tank, self)
-            self.__credits += earned_credits
-            print(f'Earned {earned_credits} credits per battle')
-            self.__won_battles += battle_won
-            self.__battles += 1
-            self.__win_rate = (self.__won_battles / self.__battles) * 100
-            Server.set_players_in_file(server.get_player_list())
-        else:
+        try:
+            if choice == len(tanks):
+                return
+            elif 0 <= choice < len(tanks):
+                my_tank: Tank = tanks[choice]
+                earned_credits, battle_won = server.start_battle(my_tank, self)
+                self.__credits += earned_credits
+                print(f'Earned {earned_credits} credits per battle')
+                self.__won_battles += battle_won
+                self.__battles += 1
+                self.__win_rate = (self.__won_battles / self.__battles) * 100
+                Server.set_players_in_file(server.get_player_list())
+        except ValueError:
             print('WRONG INPUT!')
             self.lets_battle(server)
 
