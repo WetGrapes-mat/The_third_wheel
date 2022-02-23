@@ -180,7 +180,6 @@ class Server:
         self.get_tanks_from_file()
         self.get_players_from_file()
 
-
     def get_tanks_from_file(self) -> None:
         with open('tank_list.json', 'r') as file_tank:
             tank_list = json.load(file_tank)
