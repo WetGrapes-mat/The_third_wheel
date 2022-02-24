@@ -106,6 +106,9 @@ class Tank:
         self.__heal_points = hp
         self.__force = force
 
+    def __str__(self):
+        return self.__name
+
     def get_name(self) -> str:
         return self.__name
 

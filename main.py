@@ -24,7 +24,7 @@ def choose_account(s: Server) -> Player:
         print(f'Credits: {s.get_player_list()[i].get_credits()}')
         print('Tanks')
         for tank in s.get_player_list()[i].get_tanks():
-            print(tank.get_name())
+            print(tank)
         print('*'*20)
     choice: int = int(input())
     player = s.get_player_list()[choice]
