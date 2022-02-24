@@ -4,22 +4,22 @@
       "tank_name": "T-34",
       "tank_id" : 1,
       "tank_price" : 30000,
-      "tank_hp" : 100,
-      "tank_force" : 30
+      "tank_hp" : 1000,
+      "tank_force" : 300
     },
     {
       "tank_name": "ИС",
       "tank_id" : 2,
       "tank_price" : 500000,
-      "tank_hp" : 100,
-      "tank_force" : 30
+      "tank_hp" : 1100,
+      "tank_force" : 250
     },
      {
       "tank_name": "СУ-100",
       "tank_id" : 3,
       "tank_price" : 500000,
-      "tank_hp" : 100,
-      "tank_force" : 30
+      "tank_hp" : 700,
+      "tank_force" : 400
     }
   ]
 
