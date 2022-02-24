@@ -38,4 +38,4 @@ while True:
     elif choice == command_list[5]:
         break
     else:
-        print('WRONG INPUT!')
+        print('To see the list of available commands print help')
