@@ -1,16 +1,6 @@
 from server_wot import*
 
 
-def menu():
-    print('-' * 20)
-    print('1 - start battle')
-    print('2 - buy tank')
-    print('3 - change nickname')
-    print('4 - choose an account')
-    print('0 - exit')
-    print('-' * 20, '\n')
-
-
 s = Server()
 
 
@@ -30,26 +20,22 @@ def choose_account(s: Server) -> Player:
     player = s.get_player_list()[choice]
     return player
 
-
+command_list = ['start battle', 'buy a tank', 'change nickname', 'choose account', 'help', 'exit' ]
 player = choose_account(s)
-menu()
+print(*command_list, sep='\n')
 while True:
-    choice = int(input())
-    try:
-        if choice == 1:
-            player.lets_battle(s)
-            menu()
-        elif choice == 2:
-            player.buy_tank(s)
-            menu()
-        elif choice == 3:
-            player.change_nickname(s)
-            menu()
-        elif choice == 4:
-            player = choose_account(s)
-            menu()
-        elif choice == 0:
-            break
-    except ValueError:
+    choice: str = input()
+    if choice == command_list[0]:
+        player.lets_battle(s)
+    elif choice == command_list[1]:
+        player.buy_tank(s)
+    elif choice == command_list[2]:
+        player.change_nickname(s)
+    elif choice == command_list[3]:
+        player = choose_account(s)
+    elif choice == command_list[4]:
+        print(*command_list, sep='\n')
+    elif choice == command_list[5]:
+        break
+    else:
         print('WRONG INPUT!')
-        menu()

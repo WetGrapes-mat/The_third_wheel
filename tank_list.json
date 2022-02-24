@@ -8,14 +8,14 @@
       "tank_force" : 300
     },
     {
-      "tank_name": "ИС",
+      "tank_name": "IS",
       "tank_id" : 2,
       "tank_price" : 500000,
       "tank_hp" : 1100,
       "tank_force" : 250
     },
      {
-      "tank_name": "СУ-100",
+      "tank_name": "SU-100",
       "tank_id" : 3,
       "tank_price" : 500000,
       "tank_hp" : 700,

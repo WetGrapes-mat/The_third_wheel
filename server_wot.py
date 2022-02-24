@@ -36,20 +36,22 @@ class Player:
         print('Choose the tank:')
         tanks: list[Tank] = self.__tanks
         for i in range(len(tanks)):
-            print(f'{i} - {tanks[i].get_name()}')
-        print(f'{len(tanks)} - exit')
-        choice: int = int(input())
-        if choice == len(tanks):
-            return
-        elif 0 <= choice < len(tanks):
-            my_tank: Tank = tanks[choice]
-            earned_credits, battle_won = server.start_battle(my_tank, self)
-            self.__credits += earned_credits
-            print(f'Earned {earned_credits} credits per battle')
-            self.__won_battles += battle_won
-            self.__battles += 1
-            self.__win_rate = (self.__won_battles / self.__battles) * 100
-            Server.set_players_in_file(server.get_player_list())
+            print(tanks[i].get_name())
+        print('exit')
+        choice: str = input()
+        for i in range(len(tanks)):
+            if choice == 'exit':
+                return
+            elif choice == tanks[i].get_name():
+                my_tank: Tank = tanks[i]
+                earned_credits, battle_won = server.start_battle(my_tank, self)
+                self.__credits += earned_credits
+                print(f'Earned {earned_credits} credits per battle')
+                self.__won_battles += battle_won
+                self.__battles += 1
+                self.__win_rate = (self.__won_battles / self.__battles) * 100
+                Server.set_players_in_file(server.get_player_list())
+                break
         else:
             print('WRONG INPUT!')
             self.lets_battle(server)
@@ -64,34 +66,41 @@ class Player:
                 continue
         print('Available to purchase tanks:')
         for i in range(len(available_to_purchase)):
-            print(f'{i} - {available_to_purchase[i].get_name()} - {available_to_purchase[i].get_price()}')
-        print(f'{len(available_to_purchase)} - exit')
-        choice: int = int(input())
-        if choice == len(available_to_purchase):
-            return
-        elif 0 <= choice < len(available_to_purchase):
-            new_tank: Tank = available_to_purchase[choice]
-            if self.__credits >= new_tank.get_price():
-                self.__credits -= new_tank.get_price()
-                self.__tanks.append(new_tank)
-                Server.set_players_in_file(server.get_player_list())
-            else:
-                print('Not enough credits :(')
-                self.buy_tank(server)
+            print(f'{available_to_purchase[i].get_name()} - {available_to_purchase[i].get_price()}')
+        if available_to_purchase == []:
+            print('You have all tanks!')
         else:
-            print('WRONG INPUT!')
-            self.buy_tank(server)
+            print('exit')
+
+        if available_to_purchase != []:
+            choice: str = input()
+            for i in range(len(available_to_purchase)):
+                if choice == 'exit':
+                    return
+                elif choice == available_to_purchase[i].get_name():
+                    new_tank: Tank = available_to_purchase[i]
+                    if self.__credits >= new_tank.get_price():
+                        self.__credits -= new_tank.get_price()
+                        self.__tanks.append(new_tank)
+                        Server.set_players_in_file(server.get_player_list())
+                    else:
+                        print('Not enough credits :(')
+                        self.buy_tank(server)
+                    break
+            else:
+                print('WRONG INPUT!')
+                self.buy_tank(server)
 
     def change_nickname(self, server) -> None:
         new_nickname: str = input('Enter new nickname: ')
         print('Are you sure? Changing your nickname costs 50_000 credits')
-        print('0 - YES\n1 - NO')
-        choice: int = int(input())
-        if choice == 0:
+        print('yes\nno')
+        choice: str = input()
+        if choice == 'yes':
             self.__nickname = new_nickname
             self.__credits -= 50_000
             Server.set_players_in_file(server.get_player_list())
-        elif choice == 1:
+        elif choice == 'no':
             return
         else:
             print('WRONG INPUT!')
@@ -374,7 +383,7 @@ class Battle:
             else:
                 print('+='*25)
 
-            # time.sleep(1)
+            time.sleep(1)
         return self.__team_one, self.__team_two
 
 
